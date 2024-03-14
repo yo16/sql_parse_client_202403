@@ -1,0 +1,30 @@
+.app-components {
+    display: flex;
+    flex-direction: column;
+}
+
+.dark-overlay {
+    background-color: rgba(0,0,0,0.5);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+button {
+    color: #fff;
+    background-color: #eb6100;
+    width: 100px;
+    margin: 5px;
+    border-radius: 2px;
+    padding: 5px;
+}
+button:hover {
+    color: #fff;
+    background: #f56500;
+}
+
+textarea {
+    border: 2px solid #999;
+    border-radius: 5px;
+}
