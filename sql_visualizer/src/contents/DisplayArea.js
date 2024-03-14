@@ -26,6 +26,9 @@ const DisplayArea = ({onChangedQuery = f => f}) => {
                     className="query-input-area"
                     onClick={(e)=>e.stopPropagation()}
                 >
+                    <span>
+                        Query
+                    </span>
                     <textarea
                         className="query-input-textarea"
                         onChange={handleChangedQueryText}
