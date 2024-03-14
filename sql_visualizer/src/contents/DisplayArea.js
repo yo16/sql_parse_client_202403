@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./DisplayArea.css";
 
-const DisplayArea = ({onChangedQuery = f => f}) => {
+const DisplayArea = ({onChangedQuery = f => f, statements}) => {
     const [showQueryInput, setShowQueryInput] = useState(false);
     const [queryText, setQueryText] = useState("");
 
@@ -58,7 +58,8 @@ const DisplayArea = ({onChangedQuery = f => f}) => {
                 <div
                     className="display-canvas"
                 >
-                    描画キャンバス
+                    描画エリア
+                    {statements.map((s, i)=><div key={`div_${i}`}>{s.tableName}</div>)}
                 </div>
             </div>
         </>
