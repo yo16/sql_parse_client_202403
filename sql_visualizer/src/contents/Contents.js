@@ -27,7 +27,12 @@ const Contents = () => {
                 console.log(json);
                 setStmts(json.statements);
             })
-            .catch((e) => console.error(e.message))
+            .catch(
+                (e) => {
+                    console.error("Fetch error.");
+                    console.error(e.message);
+                }
+            )
         ;
     }
 
