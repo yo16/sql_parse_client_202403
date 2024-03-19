@@ -5,17 +5,22 @@ const DisplayArea = ({onChangedQuery = f => f, statements}) => {
     const [showQueryInput, setShowQueryInput] = useState(false);
     const [queryText, setQueryText] = useState("");
 
-    const handleShowQueryInput = (show) => {
+    // クエリ入力欄の表示/非表示制御
+    const handleShowQueryInput = show => {
         setShowQueryInput(show);
     };
-    const handleChangedQueryText= (e) => {
+
+    // クエリ入力欄のOnChange
+    const handleChangedQueryText = e => {
         setQueryText(e.target.value);
     }
 
+    // クエリ入力欄の確定
     const handleOnQuerySubmit = () => {
-        // fetch
+        // 呼び出し元のonChangeQueryを実行して、fetch
         onChangedQuery(queryText);
-        // 閉じる
+
+        // クエリ入力欄は閉じる
         setShowQueryInput(false);
     };
 
