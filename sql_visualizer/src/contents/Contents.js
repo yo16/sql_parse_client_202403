@@ -13,7 +13,15 @@ const Contents = () => {
         console.log("changed query");
         console.log(query);
 
-        fetch(SERVER_URL)
+        const reqOptions = {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                query,
+            })
+        }
+
+        fetch(SERVER_URL, reqOptions)
             .then((res) => res.json())
             .then((json) => {
                 console.log(json);

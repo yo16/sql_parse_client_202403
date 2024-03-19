@@ -13,7 +13,10 @@ const DisplayArea = ({onChangedQuery = f => f, statements}) => {
     }
 
     const handleOnQuerySubmit = () => {
-        onChangedQuery(queryText)
+        // fetch
+        onChangedQuery(queryText);
+        // 閉じる
+        setShowQueryInput(false);
     };
 
     return (
