@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "React起動",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/src",
+            "webRoot": "${workspaceFolder}/sql_visualizer/src",
             "preLaunchTask": "npm: start - sql_visualizer",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
