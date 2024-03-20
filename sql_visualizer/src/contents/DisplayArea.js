@@ -2,7 +2,12 @@ import { useState } from "react";
 import "./DisplayArea.css";
 import LineageCanvas from "./LineageCanvas";
 
-const DisplayArea = ({onChangedQuery = f => f, statements}) => {
+const DisplayArea = ({
+    onChangedQuery = f => f,
+    statements,
+    tableConns,
+    colConns,
+}) => {
     const [showQueryInput, setShowQueryInput] = useState(false);
     const [queryText, setQueryText] = useState("");
 
@@ -64,7 +69,11 @@ const DisplayArea = ({onChangedQuery = f => f, statements}) => {
                 className="display-area"
             >
                 ファイルをドロップするか、<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}>ここをクリック</span>してSQL文を入力してください。
-                <LineageCanvas statements={statements} />
+                <LineageCanvas
+                    statements={statements}
+                    tableConns={tableConns}
+                    colConns={colConns}
+                />
             </div>
         </>
     );

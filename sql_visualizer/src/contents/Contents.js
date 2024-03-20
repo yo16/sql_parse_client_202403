@@ -8,6 +8,8 @@ const SERVER_URL = process.env.SERVER_URL || "http://localhost:3001/sql";
 
 const Contents = () => {
     const [stmts, setStmts] = useState([]);
+    const [tableConns, setTableConnsStmts] = useState([]);
+    const [colConns, setColConns] = useState([]);
 
     const handleOnChangedQuery = (query) => {
         console.log("changed query");
@@ -26,6 +28,8 @@ const Contents = () => {
             .then((json) => {
                 console.log(json);
                 setStmts(json.statements);
+                setTableConnsStmts(json.tableConns);
+                setColConns(json.colConns);
             })
             .catch(
                 (e) => {
@@ -41,6 +45,8 @@ const Contents = () => {
             <DisplayArea
                 onChangedQuery={handleOnChangedQuery}
                 statements={stmts}
+                tableConns={tableConns}
+                colConns={colConns}
             />
             <DisplayCtrlPanel />
         </div>
