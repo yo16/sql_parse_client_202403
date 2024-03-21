@@ -4,7 +4,9 @@ import DisplayCtrlPanel from "./DisplayCtrlPanel";
 
 import "./Contents.css";
 
-const SERVER_URL = process.env.SERVER_URL || "http://localhost:3001/sql";
+const SERVER_URL = (process.env.NODE_ENV==="development") ?
+    "http://localhost:3001/sql"
+    : "https://express-sql-parser-202403.onrender.com/sql";
 
 const Contents = () => {
     const [stmts, setStmts] = useState([]);

@@ -3,10 +3,10 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "start",
+			"script": "debug",
 			"path": "sql_visualizer",
-			"label": "npm: start - sql_visualizer",
-			"detail": "react-scripts start",
+			"label": "npm: debug - sql_visualizer",
+			"detail": "Enjoy Debugging!",
 			"group": {
 				"kind": "test",
 				"isDefault": true
@@ -21,6 +21,12 @@
 					"activeOnStart": true,
 					"beginsPattern": "Compiling...",
 					"endsPattern": "Compiled .*"
+				}
+			},
+			"options": {
+				"env": {
+					"BROWSER": "none",
+					"SERVER_URL": "http://localhost:3001/sql"
 				}
 			}
 		}

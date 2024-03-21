@@ -1,0 +1,25 @@
+runtime: nodejs20
+
+instance_class: F1
+
+env: standard
+
+handlers:
+  - url: /static
+    static_dir: sql_visualizer/build/static
+  - url: /(.*\.(json|ico|js))$
+    static_files: sql_visualizer/build/\1
+    upload: sql_visualizer/build/.*\.(json|ico|js)$
+  - url: .*
+    static_files: sql_visualizer/build/index.html
+    upload: sql_visualizer/build/index.html
+    expiration: "0s"
+
+# オートスケールしない
+automatic_scaling:
+  min_idle_instances: automatic
+  max_idle_instances: 1
+  min_pending_latency: 3000ms
+  max_pending_latency: automatic
+  max_instances: 1
+  min_instances: 0
