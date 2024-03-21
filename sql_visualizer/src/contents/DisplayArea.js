@@ -68,7 +68,7 @@ const DisplayArea = ({
             <div
                 className="display-area"
             >
-                ファイルをドロップするか、<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}>ここをクリック</span>してSQL文を入力してください。
+                {/*ファイルをドロップするか、*/}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}>ここをクリック</span>してSQL文を入力してください。
                 <LineageCanvas
                     statements={statements}
                     tableConns={tableConns}
