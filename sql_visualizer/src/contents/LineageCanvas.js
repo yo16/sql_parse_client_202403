@@ -145,7 +145,6 @@ const LineageCanvas = ({
             className="display-canvas"
             width={svgWidth}
             height={svgHeight}
-            style={{backgroundColor: "#c99"}}
         >
             {
                 tablePillers.map((curStatements, i) => 
