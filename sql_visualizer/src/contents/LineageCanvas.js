@@ -2,7 +2,7 @@
 LineageCanvas
 */
 import { v4 } from "uuid";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import "./LineageCanvas.css";
 
@@ -44,89 +44,108 @@ const LineageCanvas = ({
     statements,
     tableConns,
     colConns,
+    updateCounter,
 }) => {
     const [svgWidth, setSvgWidth] = useState(800);
     const [svgHeight, setSvgHeight] = useState(500);
 
-    // x位置を決めるためにmaxDepthを取得
-    maxDepth = statements.reduce((curMax, stmt) => {
-        return (curMax < stmt.depth)? stmt.depth: curMax;
-    }, -1);
+    const {tablePillers, mapTablePos} = useMemo(() => {
+        // x位置を決めるためにmaxDepthを取得
+        maxDepth = statements.reduce((curMax, stmt) => {
+            return (curMax < stmt.depth)? stmt.depth: curMax;
+        }, -1);
 
-    // 同じdepthごとにまとめる
-    const tablePillers = [...new Array(maxDepth+1)].map(() => []);
-    statements.forEach((s, i) => {
-        tablePillers[s.depth].push(s);
-    });
-
-    // rectの位置を決める ※connの接続点の位置は、(posX±CONNECTION_ENBEDDED, posY+height/2)
-    // テーブル(statement)のposLeftX, posRightX, posY
-    tablePillers.forEach(stmts => {
-        // x位置は、depthで決まる
-        stmts.forEach(stmt => {
-            stmt.posLeftX = CANVAS_PADDING
-                + (maxDepth - stmt.depth) * TABLE_WIDTH
-                + (maxDepth - stmt.depth) * PILLER_GAP;
-            stmt.posRightX = stmt.posLeftX + TABLE_WIDTH;
+        // 同じdepthごとにまとめる
+        const tablePillers = [...new Array(maxDepth+1)].map(() => []);
+        statements.forEach((s, i) => {
+            tablePillers[s.depth].push(s);
         });
-        // y位置は、pillerの中の、自分より上の要素の高さの累計で決まる
-        stmts.reduce((upperBottom, stmt) => {
-            // 自分より上の要素のbottomの位置が、自分のposY
-            stmt.posY = upperBottom;
 
-            // 自分のbottomの位置を計算して次に渡す
-            const curBottom = upperBottom
-                + getTableRectHeight(stmt)
-                + TABLE_GAP;        // 下の隙間
-            return curBottom;
-        }, CANVAS_PADDING);
-    });
+        // rectの位置を決める ※connの接続点の位置は、(posX±CONNECTION_ENBEDDED, posY+height/2)
+        // テーブル(statement)のposLeftX, posRightX, posY
+        const maxX = (maxDepth + 1) * TABLE_WIDTH + maxDepth * PILLER_GAP + CANVAS_PADDING * 2;
+        let maxY = 0;
+        tablePillers.forEach(stmts => {
+            // x位置は、depthで決まる
+            stmts.forEach(stmt => {
+                stmt.posLeftX = CANVAS_PADDING
+                    + (maxDepth - stmt.depth) * TABLE_WIDTH
+                    + (maxDepth - stmt.depth) * PILLER_GAP;
+                stmt.posRightX = stmt.posLeftX + TABLE_WIDTH;
+            });
+            // y位置は、pillerの中の、自分より上の要素の高さの累計で決まる
+            const finalBottom = stmts.reduce((upperBottom, stmt) => {
+                // 自分より上の要素のbottomの位置が、自分のposY
+                stmt.posY = upperBottom;
 
-    // 列のposLeftX, posRightX, posY
-    statements.forEach(stmt => {
-        // x位置は、stmtと同じ
-        stmt.columns.forEach(col => {
-            col.posLeftX = stmt.posLeftX;
-            col.posRightX = stmt.posRightX;
+                // 自分のbottomの位置を計算して次に渡す
+                const curBottom = upperBottom
+                    + getTableRectHeight(stmt)
+                    + TABLE_GAP;        // 下の隙間
+                return curBottom;
+            }, CANVAS_PADDING);
+
+            if (maxY < finalBottom - TABLE_GAP + CANVAS_PADDING) {
+                maxY = finalBottom - TABLE_GAP + CANVAS_PADDING;
+            }
         });
-        // y位置は、stmtから累積計算
-        stmt.columns.reduce((upperBottom, col) => {
-            // 自分より上の要素のbottomの位置が、自分のposY
-            col.posY = upperBottom;
+        setSvgWidth(maxX);
+        setSvgHeight(maxY);
 
-            // 自分のbottomの位置を計算して次に渡す
-            const curBottom = upperBottom + TABLE_COLUMN_HEIGHT;
-            return curBottom;
-        }, stmt.posY + TABLE_HEADER_HEIGHT);
-    });
+        // 列のposLeftX, posRightX, posY
+        statements.forEach(stmt => {
+            // x位置は、stmtと同じ
+            stmt.columns.forEach(col => {
+                col.posLeftX = stmt.posLeftX;
+                col.posRightX = stmt.posRightX;
+            });
+            // y位置は、stmtから累積計算
+            stmt.columns.reduce((upperBottom, col) => {
+                // 自分より上の要素のbottomの位置が、自分のposY
+                col.posY = upperBottom;
 
-    // テーブル名、列名から、posLeftX, posRightX, posYを得られるobject
-    const mapTablePos = statements.reduce((m1, stmt) => {
-        return {
-            ...m1,
-            [stmt.tableName]: {
-                posLeftX: stmt.posLeftX,
-                posRightX: stmt.posRightX,
-                posY: stmt.posY,
-                columns: stmt.columns.reduce((m2, col) => {
-                    return {
-                        ...m2,
-                        [col.columnName]: {
-                            posLeftX: col.posLeftX,
-                            posRightX: col.posRightX,
-                            posY: col.posY,
+                // 自分のbottomの位置を計算して次に渡す
+                const curBottom = upperBottom + TABLE_COLUMN_HEIGHT;
+                return curBottom;
+            }, stmt.posY + TABLE_HEADER_HEIGHT);
+        });
+
+        // テーブル名、列名から、posLeftX, posRightX, posYを得られるobject
+        const mapTablePos = statements.reduce((m1, stmt) => {
+            return {
+                ...m1,
+                [stmt.tableName]: {
+                    posLeftX: stmt.posLeftX,
+                    posRightX: stmt.posRightX,
+                    posY: stmt.posY,
+                    columns: stmt.columns.reduce((m2, col) => {
+                        return {
+                            ...m2,
+                            [col.columnName]: {
+                                posLeftX: col.posLeftX,
+                                posRightX: col.posRightX,
+                                posY: col.posY,
+                            }
                         }
-                    }
-                }, {}),
-            },
+                    }, {}),
+                },
+            };
+        }, {});
+
+        return {
+            tablePillers,
+            mapTablePos,
         };
-    }, {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [updateCounter]);
+
 
     return (
         <svg
             className="display-canvas"
             width={svgWidth}
             height={svgHeight}
+            style={{backgroundColor: "#c99"}}
         >
             {
                 tablePillers.map((curStatements, i) => 

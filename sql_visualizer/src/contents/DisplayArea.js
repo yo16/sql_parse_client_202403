@@ -9,6 +9,7 @@ const DisplayArea = ({
     statements,
     tableConns,
     colConns,
+    updateCounter,
 }) => {
     const [showQueryInput, setShowQueryInput] = useState(false);
     const [queryText, setQueryText] = useState("");
@@ -37,7 +38,7 @@ const DisplayArea = ({
             <div
                 className="display-area"
             >
-                {/*ファイルをドロップするか、*/}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}><button>CLICK HEAR</button></span> and Enter SQL Query!
+                {/*Drop SQL-File or */}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}><button>CLICK HEAR</button></span> and Enter SQL Query!
                 <TransformWrapper
                     minScale={0.5}
                 >
@@ -46,6 +47,7 @@ const DisplayArea = ({
                             statements={statements}
                             tableConns={tableConns}
                             colConns={colConns}
+                            updateCounter={updateCounter}
                         />
                     </TransformComponent>
                 </TransformWrapper>
