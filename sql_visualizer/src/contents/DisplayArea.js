@@ -41,7 +41,7 @@ const DisplayArea = ({
                     onClick={(e)=>e.stopPropagation()}
                 >
                     <span>
-                        Query
+                        Enter Query
                     </span>
                     <textarea
                         className="query-input-textarea"
@@ -55,7 +55,7 @@ const DisplayArea = ({
                         <button
                             onClick={() => handleShowQueryInput(false)}
                         >
-                            キャンセル
+                            Cancel
                         </button>
                         <button
                             onClick={handleOnQuerySubmit}
@@ -68,7 +68,7 @@ const DisplayArea = ({
             <div
                 className="display-area"
             >
-                {/*ファイルをドロップするか、*/}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}>ここをクリック</span>してSQL文を入力してください。
+                {/*ファイルをドロップするか、*/}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}><button>CLICK HEAR</button></span> and Enter SQL Query!
                 <LineageCanvas
                     statements={statements}
                     tableConns={tableConns}

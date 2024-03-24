@@ -33,12 +33,10 @@ const Contents = () => {
                 setTableConnsStmts(json.tableConns);
                 setColConns(json.colConns);
             })
-            .catch(
-                (e) => {
-                    console.error("Fetch error.");
-                    console.error(e.message);
-                }
-            )
+            .catch (e => {
+                console.error("Fetch error.");
+                console.error(e.message);
+            })
         ;
     }
 

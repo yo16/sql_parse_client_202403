@@ -5,7 +5,8 @@ const DisplayCtrlPanel = () => {
         <div
             className="display-ctrl-panel-contents"
         >
-            コンパネ
+            Control Panel<br />
+            ...working!
         </div>
     );
 };
