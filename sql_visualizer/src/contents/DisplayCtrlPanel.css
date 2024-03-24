@@ -1,3 +1,8 @@
 .display-ctrl-panel-contents {
-    background-color: #0f0;
+    padding: 10px;
+    background-color: rgb(229, 166, 178);
+}
+
+.lblCbFor {
+    margin-left: 10px;
 }

@@ -10,6 +10,8 @@ const DisplayArea = ({
     tableConns,
     colConns,
     updateCounter,
+    displayTableConns,
+    displayColumnConns,
 }) => {
     const [showQueryInput, setShowQueryInput] = useState(false);
     const [queryText, setQueryText] = useState("");
@@ -48,6 +50,8 @@ const DisplayArea = ({
                             tableConns={tableConns}
                             colConns={colConns}
                             updateCounter={updateCounter}
+                            displayTableConns={displayTableConns}
+                            displayColumnConns={displayColumnConns}
                         />
                     </TransformComponent>
                 </TransformWrapper>

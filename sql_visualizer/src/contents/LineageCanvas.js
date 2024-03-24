@@ -48,6 +48,8 @@ const LineageCanvas = ({
     tableConns,
     colConns,
     updateCounter,
+    displayTableConns,
+    displayColumnConns,
 }) => {
     const [svgWidth, setSvgWidth] = useState(SVG_MIN_WIDTH);
     const [svgHeight, setSvgHeight] = useState(SVG_MIN_HEIGHT);
@@ -99,8 +101,8 @@ const LineageCanvas = ({
                 maxY = finalBottom - TABLE_GAP + CANVAS_PADDING;
             }
         });
-        setSvgWidth(SVG_MIN_WIDTH < maxX ? maxX: SVG_MIN_WIDTH);
-        setSvgHeight(SVG_MIN_HEIGHT < maxY ? maxY: SVG_MIN_HEIGHT);
+        setSvgWidth(maxX);
+        setSvgHeight(maxY);
 
         // 列のposLeftX, posRightX, posY
         statements.forEach(stmt => {
@@ -149,6 +151,32 @@ const LineageCanvas = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateCounter]);
 
+    // Table Connections
+    const tableConnections = displayTableConns?
+        (
+            tableConns.map((tableConn, i) => 
+                <TableConn
+                    key={`tc_${i}`}
+                    conn={tableConn}
+                    posInfo={mapTablePos}
+                />
+            )
+        ):
+        null;
+
+    // Column Connections
+    const columnConnections = displayColumnConns?
+        (
+            colConns.map((colConn, i) => 
+                <ColumnConn
+                    key={`tc_${i}`}
+                    conn={colConn}
+                    posInfo={mapTablePos}
+                />
+            )
+        ):
+        null;
+
 
     return (
         <svg
@@ -164,24 +192,8 @@ const LineageCanvas = ({
                     />
                 )
             }
-            {
-                colConns.map((colConn, i) => 
-                    <ColumnConn
-                        key={`tc_${i}`}
-                        conn={colConn}
-                        posInfo={mapTablePos}
-                    />
-                )
-            }
-            {
-                tableConns.map((tableConn, i) => 
-                    <TableConn
-                        key={`tc_${i}`}
-                        conn={tableConn}
-                        posInfo={mapTablePos}
-                    />
-                )
-            }
+            {columnConnections}
+            {tableConnections}
         </svg>
     );
 };

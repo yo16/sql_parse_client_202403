@@ -12,11 +12,13 @@ const Contents = () => {
     const [stmts, setStmts] = useState([]);
     const [tableConns, setTableConnsStmts] = useState([]);
     const [colConns, setColConns] = useState([]);
+    const [displayTableConns, setDisplayTableConns] = useState(true);
+    const [displayColumnConns, setDisplayColumnConns] = useState(true);
     const [updateCounter, setUpdateCounter] = useState(0);  // Queryが変わったときの下位モジュールのトリガーに使う
 
     const handleOnChangedQuery = (query) => {
-        console.log("changed query");
-        console.log(query);
+        //console.log("changed query");
+        //console.log(query);
 
         const reqOptions = {
             method: "POST",
@@ -29,7 +31,7 @@ const Contents = () => {
         fetch(SERVER_URL, reqOptions)
             .then((res) => res.json())
             .then((json) => {
-                console.log(json);
+                //console.log(json);
                 setStmts(json.statements);
                 setTableConnsStmts(json.tableConns);
                 setColConns(json.colConns);
@@ -42,6 +44,13 @@ const Contents = () => {
         ;
     }
 
+    const handleOnCheckDisplayTableConns = checked => {
+        setDisplayTableConns(checked);
+    }
+    const handleOnCheckDisplayColumnConns = checked => {
+        setDisplayColumnConns(checked);
+    }
+
     return (
         <div className="contents-items">
             <DisplayArea
@@ -50,8 +59,15 @@ const Contents = () => {
                 tableConns={tableConns}
                 colConns={colConns}
                 updateCounter={updateCounter}
+                displayTableConns={displayTableConns}
+                displayColumnConns={displayColumnConns}
             />
-            <DisplayCtrlPanel />
+            <DisplayCtrlPanel
+                initialCheckedDispTableConns={displayTableConns}
+                initialCheckedDispColumnConns={displayColumnConns}
+                onCheckDisplayTableConns={handleOnCheckDisplayTableConns}
+                onCheckDisplayColumnConns={handleOnCheckDisplayColumnConns}
+            />
         </div>
     );
 };
