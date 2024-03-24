@@ -19,3 +19,11 @@
     height: 100%;
     padding: 5px;
 }
+
+.react-transform-wrapper {
+    background-color: #e8e8e8;
+    border: 2px solid #999;
+    margin-top: 5px;
+    width: 100%;
+    height: 500px;
+}

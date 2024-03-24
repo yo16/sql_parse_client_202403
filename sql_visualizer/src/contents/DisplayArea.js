@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+
 import "./DisplayArea.css";
 import LineageCanvas from "./LineageCanvas";
 
@@ -33,6 +35,22 @@ const DisplayArea = ({
     return (
         <>
             <div
+                className="display-area"
+            >
+                {/*ファイルをドロップするか、*/}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}><button>CLICK HEAR</button></span> and Enter SQL Query!
+                <TransformWrapper
+                    minScale={0.5}
+                >
+                    <TransformComponent>
+                        <LineageCanvas
+                            statements={statements}
+                            tableConns={tableConns}
+                            colConns={colConns}
+                        />
+                    </TransformComponent>
+                </TransformWrapper>
+            </div>
+            <div
                 className={`fixed top-0 left-0 w-full h-full flex items-center justify-center ${showQueryInput?"dark-overlay":"hidden"}`}
                 onClick={()=>handleShowQueryInput(false)}
             >
@@ -64,16 +82,6 @@ const DisplayArea = ({
                         </button>
                         </div>
                 </div>
-            </div>
-            <div
-                className="display-area"
-            >
-                {/*ファイルをドロップするか、*/}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}><button>CLICK HEAR</button></span> and Enter SQL Query!
-                <LineageCanvas
-                    statements={statements}
-                    tableConns={tableConns}
-                    colConns={colConns}
-                />
             </div>
         </>
     );

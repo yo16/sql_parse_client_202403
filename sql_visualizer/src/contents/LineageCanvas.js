@@ -2,6 +2,8 @@
 LineageCanvas
 */
 import { v4 } from "uuid";
+import { useState } from "react";
+
 import "./LineageCanvas.css";
 
 const CANVAS_PADDING = 20;
@@ -43,6 +45,9 @@ const LineageCanvas = ({
     tableConns,
     colConns,
 }) => {
+    const [svgWidth, setSvgWidth] = useState(800);
+    const [svgHeight, setSvgHeight] = useState(500);
+
     // x位置を決めるためにmaxDepthを取得
     maxDepth = statements.reduce((curMax, stmt) => {
         return (curMax < stmt.depth)? stmt.depth: curMax;
@@ -120,6 +125,8 @@ const LineageCanvas = ({
     return (
         <svg
             className="display-canvas"
+            width={svgWidth}
+            height={svgHeight}
         >
             {
                 tablePillers.map((curStatements, i) => 
