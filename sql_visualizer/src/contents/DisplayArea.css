@@ -1,4 +1,5 @@
 .display-area {
+    width: 100%;
     background-color: rgb(241, 189, 189);
     padding: 5px;
 }
