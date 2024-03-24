@@ -39,6 +39,9 @@ const COL_CONNECTION_END_COLOR = "#ccab73";
 const COL_CONNECTION_WIDTH = 2;
 const COL_CONNECTION_END_DOT_R = 4;
 
+const SVG_MIN_WIDTH = 800;
+const SVG_MIN_HEIGHT = 500;
+
 let maxDepth = 0;
 const LineageCanvas = ({
     statements,
@@ -46,10 +49,17 @@ const LineageCanvas = ({
     colConns,
     updateCounter,
 }) => {
-    const [svgWidth, setSvgWidth] = useState(800);
-    const [svgHeight, setSvgHeight] = useState(500);
+    const [svgWidth, setSvgWidth] = useState(SVG_MIN_WIDTH);
+    const [svgHeight, setSvgHeight] = useState(SVG_MIN_HEIGHT);
 
     const {tablePillers, mapTablePos} = useMemo(() => {
+        if (statements.length===0) {
+            return {
+                tablePillers: [],
+                mapTablePos: {},
+            };
+        }
+
         // x位置を決めるためにmaxDepthを取得
         maxDepth = statements.reduce((curMax, stmt) => {
             return (curMax < stmt.depth)? stmt.depth: curMax;
@@ -89,8 +99,8 @@ const LineageCanvas = ({
                 maxY = finalBottom - TABLE_GAP + CANVAS_PADDING;
             }
         });
-        setSvgWidth(maxX);
-        setSvgHeight(maxY);
+        setSvgWidth(SVG_MIN_WIDTH < maxX ? maxX: SVG_MIN_WIDTH);
+        setSvgHeight(SVG_MIN_HEIGHT < maxY ? maxY: SVG_MIN_HEIGHT);
 
         // 列のposLeftX, posRightX, posY
         statements.forEach(stmt => {
