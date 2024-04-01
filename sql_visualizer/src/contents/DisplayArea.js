@@ -45,7 +45,9 @@ const DisplayArea = ({
             <div
                 className="display-area"
             >
-                {/*Drop SQL-File or */}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}><button>CLICK HERE</button></span> and Enter SQL Query!
+                {/*Drop SQL-File or */}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}>
+                    <button>CLICK HERE</button>
+                </span> and Enter SQL Query!
                 <TransformWrapper
                     minScale={0.5}
                 >
