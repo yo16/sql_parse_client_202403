@@ -17,8 +17,13 @@ const DisplayArea = ({
     const [queryText, setQueryText] = useState("");
 
     // クエリ入力欄の表示/非表示制御
-    const handleShowQueryInput = show => {
+    const handleShowQueryInput = (show) => {
         setShowQueryInput(show);
+
+        // 表示時はフォーカスをあてる
+        if (show) {
+            setTimeout(()=>document.getElementById("areaQueryEntry").focus());
+        }
     };
 
     // クエリ入力欄のOnChange
@@ -71,6 +76,7 @@ const DisplayArea = ({
                         className="query-input-textarea"
                         onChange={handleChangedQueryText}
                         defaultValue={queryText}
+                        id="areaQueryEntry"
                     >
                     </textarea>
                     <div
