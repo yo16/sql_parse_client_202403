@@ -5,7 +5,7 @@ import Contents from './contents/Contents';
 function App() {
     return (
         <div
-          className="app-components"
+          className="components-flex-column"
         >
             <Header />
             <Contents />

@@ -1,14 +1,19 @@
-.app-components {
-    display: flex;
-    flex-direction: column;
-}
-
 .dark-overlay {
     background-color: rgba(0,0,0,0.5);
 }
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.components-flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.components-flex-row {
+    display: flex;
+    flex-direction: row;
 }
 
 button {

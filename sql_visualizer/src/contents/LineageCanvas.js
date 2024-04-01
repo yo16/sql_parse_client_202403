@@ -183,6 +183,7 @@ const LineageCanvas = ({
             className="display-canvas"
             width={svgWidth}
             height={svgHeight}
+            id="svgLineage"
         >
             {
                 tablePillers.map((curStatements, i) => 

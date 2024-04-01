@@ -1,8 +1,13 @@
 .display-ctrl-panel-contents {
     padding: 10px;
     background-color: rgb(229, 166, 178);
+    gap: 10px;
 }
 
 .lblCbFor {
     margin-left: 10px;
+}
+
+.btnDownload {
+    width: 140px;
 }
