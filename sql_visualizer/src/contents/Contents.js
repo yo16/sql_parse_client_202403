@@ -20,6 +20,10 @@ const Contents = () => {
         //console.log("changed query");
         //console.log(query);
 
+        if (!query || query.length===0) {
+            return;
+        }
+
         const reqOptions = {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -31,7 +35,9 @@ const Contents = () => {
         fetch(SERVER_URL, reqOptions)
             .then((res) => res.json())
             .then((json) => {
-                //console.log(json);
+                if (Object.keys(json).length===0) {
+                    return;
+                }
                 setStmts(json.statements);
                 setTableConnsStmts(json.tableConns);
                 setColConns(json.colConns);
