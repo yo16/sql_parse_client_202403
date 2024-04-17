@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
-import "./DisplayArea.css";
 import LineageCanvas from "./LineageCanvas";
+import FileInputFormArea from "./FileInputFormArea";
+import "./DisplayArea.css";
 
 const DisplayArea = ({
     onChangedQuery = f => f,
@@ -14,6 +15,9 @@ const DisplayArea = ({
     displayColumnConns,
 }) => {
     const [showQueryInput, setShowQueryInput] = useState(false);
+
+    // 入力欄に入力中のクエリ文字列
+    // このqueryTextは、確定前の文字列も含むので、確定してからonChangedQueryを呼ぶ
     const [queryText, setQueryText] = useState("");
 
     // クエリ入力欄の表示/非表示制御
@@ -31,13 +35,28 @@ const DisplayArea = ({
         setQueryText(e.target.value);
     }
 
-    // クエリ入力欄の確定
+    // クエリ入力欄の確定（OKボタン）
     const handleOnQuerySubmit = () => {
-        // 呼び出し元のonChangeQueryを実行して、fetch
-        onChangedQuery(queryText);
-
-        // クエリ入力欄は閉じる
+        // クエリ入力欄を閉じる
         setShowQueryInput(false);
+
+        // クエリの確定
+        confirmQuery(queryText);
+    }
+
+    // FileInputFormAreaで、ファイルドロップでクエリが登録されたとき
+    const handleOnEnterInputFormQuery = (query) => {
+        // 入力欄に入れる
+        setQueryText(query);
+
+        // クエリの確定
+        confirmQuery(query);
+    }
+
+    // 今のqueryTextを使って、fetchすべく、確定する
+    const confirmQuery = (query) => {
+        // 呼び出し元のonChangeQueryを実行して、fetch
+        onChangedQuery(query);
     };
 
     return (
@@ -45,9 +64,10 @@ const DisplayArea = ({
             <div
                 className="display-area"
             >
-                {/*Drop SQL-File or */}<span className="cursor-pointer" onClick={()=>handleShowQueryInput(true)}>
-                    <button>CLICK HERE</button>
-                </span> and Enter SQL Query!
+                <FileInputFormArea
+                    onClickDisplayDialogButton={()=>handleShowQueryInput(true)}
+                    onConfirmQuery={handleOnEnterInputFormQuery}
+                />
                 <TransformWrapper
                     minScale={0.5}
                 >

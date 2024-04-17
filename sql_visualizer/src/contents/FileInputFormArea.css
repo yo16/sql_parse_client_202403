@@ -1,0 +1,19 @@
+.containerFormInputArea {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.divDropZone {
+    border-width: 5px;
+    border-color: transparent;
+    border-radius: 10px;
+    padding: 10px;
+}
+.divDragActive {
+    border-color: #33f9;
+    border-style: dashed;
+}
+button {
+    /*pointer-events: none;*/
+}
