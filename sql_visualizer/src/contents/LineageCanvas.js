@@ -6,6 +6,11 @@ import { useState, useMemo } from "react";
 
 import "./LineageCanvas.css";
 
+//import TableConn from "./svg_items/TableConn";
+import TableConns from "./svg_items/TableConns";
+//import ColumnConn from "./svg_items/ColumnConn";
+import ColumnConns from "./svg_items/ColumnConns";
+
 const CANVAS_PADDING = 20;
 const PILLER_GAP = 100;
 const TABLE_WIDTH = 200;
@@ -151,33 +156,6 @@ const LineageCanvas = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateCounter]);
 
-    // Table Connections
-    const tableConnections = displayTableConns?
-        (
-            tableConns.map((tableConn, i) => 
-                <TableConn
-                    key={`tc_${i}`}
-                    conn={tableConn}
-                    posInfo={mapTablePos}
-                />
-            )
-        ):
-        null;
-
-    // Column Connections
-    const columnConnections = displayColumnConns?
-        (
-            colConns.map((colConn, i) => 
-                <ColumnConn
-                    key={`tc_${i}`}
-                    conn={colConn}
-                    posInfo={mapTablePos}
-                />
-            )
-        ):
-        null;
-
-
     return (
         <svg
             className="display-canvas"
@@ -193,8 +171,18 @@ const LineageCanvas = ({
                     />
                 )
             }
-            {columnConnections}
-            {tableConnections}
+            {displayColumnConns &&
+                <ColumnConns
+                    columnConnsInfo={colConns}
+                    mapTablePos={mapTablePos}
+                />
+            }
+            {displayTableConns &&
+                <TableConns
+                    tableConnectionsInfo={tableConns}
+                    mapTablePos={mapTablePos}
+                />
+            }
         </svg>
     );
 };
@@ -303,113 +291,7 @@ const TableRect = ({statement}) => {
     );
 };
 
-const TableConn = ({conn, posInfo}) => {
-    const fromPos = {
-        x: posInfo[conn.fromTableName].posRightX - TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.fromTableName].posY + TABLE_HEADER_HEIGHT / 2,
-    };
-    const toPos = {
-        x: posInfo[conn.toTableName].posLeftX + TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.toTableName].posY + TABLE_HEADER_HEIGHT / 2,
-    };
-    // M 始点 Q 1点目の制御点, 中間点 T 終点
-    const pathStr = 
-        `M ${fromPos.x} ${fromPos.y} ` +
-        `Q ${(fromPos.x + toPos.x) / 2} ${fromPos.y}, ` +
-        `${(fromPos.x + toPos.x) / 2} ${(fromPos.y + toPos.y) / 2} ` +
-        `T ${toPos.x} ${toPos.y}`;
 
-    return (
-        <g>
-            <path
-                d={pathStr}
-                fill="none"
-                stroke={TBL_CONNECTION_COLOR}
-                strokeWidth={TBL_CONNECTION_WIDTH}
-            />
-            <circle
-                cx={fromPos.x}
-                cy={fromPos.y}
-                r={TBL_CONNECTION_END_DOT_R}
-                fill={TBL_CONNECTION_COLOR}
-                stroke="none"
-            />
-            <circle
-                cx={toPos.x}
-                cy={toPos.y}
-                r={TBL_CONNECTION_END_DOT_R}
-                fill={TBL_CONNECTION_COLOR}
-                stroke="none"
-            />
-        </g>
-    );
-};
-
-const ColumnConn = ({conn, posInfo}) => {
-    // クエリの不正等で見つからない時があるので、その場合は空を返す
-    if (
-        (!Object.prototype.hasOwnProperty.call(
-            posInfo,
-            conn.fromTableName
-        )) ||
-        (!Object.prototype.hasOwnProperty.call(
-            posInfo[conn.fromTableName].columns,
-            conn.fromColumnName
-        )) ||
-        (!Object.prototype.hasOwnProperty.call(
-            posInfo,
-            conn.toTableName
-        )) ||
-        (!Object.prototype.hasOwnProperty.call(
-            posInfo[conn.toTableName].columns,
-            conn.toColumnName
-        ))
-    ) {
-        return (<></>);
-    }
-
-    const fromPos = {
-        x: posInfo[conn.fromTableName].columns[conn.fromColumnName].posRightX - TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.fromTableName].columns[conn.fromColumnName].posY + TABLE_HEADER_HEIGHT / 2,
-    };
-
-    const toPos = {
-        x: posInfo[conn.toTableName].columns[conn.toColumnName].posLeftX - TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.toTableName].columns[conn.toColumnName].posY + TABLE_HEADER_HEIGHT / 2,
-    };
-
-    // M 始点 Q 1点目の制御点, 中間点 T 終点
-    const pathStr = 
-        `M ${fromPos.x} ${fromPos.y} ` +
-        `Q ${(fromPos.x * 2 + toPos.x) / 3} ${fromPos.y}, ` +
-        `${(fromPos.x + toPos.x) / 2} ${(fromPos.y + toPos.y) / 2} ` +
-        `T ${toPos.x} ${toPos.y}`;
-
-    return (
-        <g>
-            <path
-                d={pathStr}
-                fill="none"
-                stroke={COL_CONNECTION_COLOR}
-                strokeWidth={COL_CONNECTION_WIDTH}
-            />
-            <circle
-                cx={fromPos.x}
-                cy={fromPos.y}
-                r={COL_CONNECTION_END_DOT_R}
-                fill={COL_CONNECTION_END_COLOR}
-                stroke="none"
-            />
-            <circle
-                cx={toPos.x}
-                cy={toPos.y}
-                r={COL_CONNECTION_END_DOT_R}
-                fill={COL_CONNECTION_END_COLOR}
-                stroke="none"
-            />
-        </g>
-    );
-};
 
 
 export default LineageCanvas;
