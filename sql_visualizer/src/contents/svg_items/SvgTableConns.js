@@ -1,12 +1,12 @@
 
-import TableConn from "./TableConn";
+import SvgTableConn from "./SvgTableConn";
 
-const TableConns = ({
+const SvgTableConns = ({
     tableConnectionsInfo,
     mapTablePos,
 }) => {
     const cons = tableConnectionsInfo.map((tableConn, i) => 
-        <TableConn
+        <SvgTableConn
             key={`tc_${i}`}
             conn={tableConn}
             posInfo={mapTablePos}
@@ -18,4 +18,4 @@ const TableConns = ({
     );
 };
 
-export default TableConns;
+export default SvgTableConns;

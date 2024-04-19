@@ -1,13 +1,13 @@
 
-import ColumnConn from "./ColumnConn";
+import SvgColumnConn from "./SvgColumnConn";
 
-const ColumnConns = ({
+const SvgColumnConns = ({
     columnConnsInfo,
     mapTablePos,
 }) => {
     return (
         columnConnsInfo.map((colConn, i) => 
-            <ColumnConn
+            <SvgColumnConn
                 key={`tc_${i}`}
                 conn={colConn}
                 posInfo={mapTablePos}
@@ -16,4 +16,4 @@ const ColumnConns = ({
     )
 };
 
-export default ColumnConns;
+export default SvgColumnConns;

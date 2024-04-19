@@ -5,9 +5,9 @@ import {
     COL_CONNECTION_WIDTH,
     COL_CONNECTION_END_DOT_R,
     COL_CONNECTION_END_COLOR,
-} from "./svgConstants";
+} from "../svg_utils/svgConstants";
 
-const ColumnConn = ({
+const SvgColumnConn = ({
     conn,
     posInfo,
 }) => {
@@ -33,14 +33,17 @@ const ColumnConn = ({
         return (<></>);
     }
 
+    const fromObj = posInfo[conn.fromTableName].columns[conn.fromColumnName];
+    const toObj = posInfo[conn.toTableName].columns[conn.toColumnName];
+
     const fromPos = {
-        x: posInfo[conn.fromTableName].columns[conn.fromColumnName].posRightX - TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.fromTableName].columns[conn.fromColumnName].posY + TABLE_HEADER_HEIGHT / 2,
+        x: fromObj.absX + fromObj.width - TBL_CONNECTION_ENBEDDED,
+        y: fromObj.absY + TABLE_HEADER_HEIGHT / 2,
     };
 
     const toPos = {
-        x: posInfo[conn.toTableName].columns[conn.toColumnName].posLeftX - TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.toTableName].columns[conn.toColumnName].posY + TABLE_HEADER_HEIGHT / 2,
+        x: toObj.absX - TBL_CONNECTION_ENBEDDED,
+        y: toObj.absY + TABLE_HEADER_HEIGHT / 2,
     };
 
     // M 始点 Q 1点目の制御点, 中間点 T 終点
@@ -76,4 +79,4 @@ const ColumnConn = ({
     );
 };
 
-export default ColumnConn;
+export default SvgColumnConn;

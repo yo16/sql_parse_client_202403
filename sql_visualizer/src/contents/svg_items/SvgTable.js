@@ -1,0 +1,83 @@
+import { v4 } from "uuid";
+
+import {
+    TABLE_CORNER_R,
+    TABLE_BORDER_WIDTH,
+    TABLE_BORDER_COLOR,
+} from "../svg_utils/svgConstants";
+import SvgColumn from "./SvgColumn";
+
+const SvgTable = ({
+    tableDispObj
+}) => {
+    const clipName = `tableClip_${v4()}`;
+
+    return (
+        <>
+            <g
+                transform={`translate(${tableDispObj.relX}, ${tableDispObj.relY})`}
+            >
+                <defs>
+                    <clipPath
+                        id={clipName}
+                    >
+                        <rect
+                            x={tableDispObj.relX}
+                            y={tableDispObj.relX}
+                            width={tableDispObj.width}
+                            height={tableDispObj.height}
+                            rx={TABLE_CORNER_R}
+                            ry={TABLE_CORNER_R}
+                        />
+                    </clipPath>
+                </defs>
+                {
+                    // 背景
+                }
+                <rect
+                    x={tableDispObj.relX}
+                    y={tableDispObj.relY}
+                    width={tableDispObj.width}
+                    height={tableDispObj.height}
+                    clipPath={`url(#${clipName})`}
+                />
+                {
+                    // テーブル名
+                }
+                <SvgColumn
+                    columnDispObj={tableDispObj.tableTitle}
+                    isTableTitle={true}
+                    clipPath={`url(#${clipName})`}
+                />
+                {
+                    // 列
+                }
+                {tableDispObj.columns.map((tblCol, i) => 
+                    <SvgColumn
+                        key={`col_${i}`}
+                        columnDispObj={tblCol}
+                        isTableTitle={false}
+                        isEven={i%2===0}
+                        clipPath={`url(#${clipName})`}
+                    />
+                )}
+                {
+                    // テーブルの枠
+                }
+                <rect
+                    x={tableDispObj.relX}
+                    y={tableDispObj.relY}
+                    width={tableDispObj.width}
+                    height={tableDispObj.height}
+                    fill="none"
+                    strokeWidth={TABLE_BORDER_WIDTH}
+                    stroke={TABLE_BORDER_COLOR}
+                    rx={TABLE_CORNER_R}
+                    ry={TABLE_CORNER_R}
+                />
+            </g>
+        </>
+    );
+};
+
+export default SvgTable;

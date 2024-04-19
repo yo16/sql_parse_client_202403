@@ -5,20 +5,23 @@ import {
     TBL_CONNECTION_COLOR,
     TBL_CONNECTION_WIDTH,
     TBL_CONNECTION_END_DOT_R,
-} from "./svgConstants";
+} from "../svg_utils/svgConstants";
 
 
-const TableConn = ({
+const SvgTableConn = ({
     conn,
     posInfo,
 }) => {
+    const fromObj = posInfo[conn.fromTableName];
+    const toObj = posInfo[conn.toTableName];
+
     const fromPos = {
-        x: posInfo[conn.fromTableName].posRightX - TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.fromTableName].posY + TABLE_HEADER_HEIGHT / 2,
+        x: fromObj.absX + fromObj.width - TBL_CONNECTION_ENBEDDED,
+        y: fromObj.absY + TABLE_HEADER_HEIGHT / 2,
     };
     const toPos = {
-        x: posInfo[conn.toTableName].posLeftX + TBL_CONNECTION_ENBEDDED,
-        y: posInfo[conn.toTableName].posY + TABLE_HEADER_HEIGHT / 2,
+        x: toObj.absX + TBL_CONNECTION_ENBEDDED,
+        y: toObj.absY + TABLE_HEADER_HEIGHT / 2,
     };
     // M 始点 Q 1点目の制御点, 中間点 T 終点
     const pathStr = 
@@ -53,4 +56,4 @@ const TableConn = ({
     );
 };
 
-export default TableConn;
+export default SvgTableConn;
