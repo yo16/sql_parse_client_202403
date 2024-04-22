@@ -31,50 +31,51 @@ const SvgTable = ({
                         />
                     </clipPath>
                 </defs>
-                {
-                    // 背景
-                }
-                <rect
-                    x={tableDispObj.relX}
-                    y={tableDispObj.relY}
-                    width={tableDispObj.width}
-                    height={tableDispObj.height}
+                <g
                     clipPath={`url(#${clipName})`}
-                />
-                {
-                    // テーブル名
-                }
-                <SvgColumn
-                    columnDispObj={tableDispObj.tableTitle}
-                    isTableTitle={true}
-                    clipPath={`url(#${clipName})`}
-                />
-                {
-                    // 列
-                }
-                {tableDispObj.columns.map((tblCol, i) => 
-                    <SvgColumn
-                        key={`col_${i}`}
-                        columnDispObj={tblCol}
-                        isTableTitle={false}
-                        isEven={i%2===0}
-                        clipPath={`url(#${clipName})`}
+                >
+                    {
+                        // 背景
+                    }
+                    <rect
+                        x={tableDispObj.relX}
+                        y={tableDispObj.relY}
+                        width={tableDispObj.width}
+                        height={tableDispObj.height}
                     />
-                )}
-                {
-                    // テーブルの枠
-                }
-                <rect
-                    x={tableDispObj.relX}
-                    y={tableDispObj.relY}
-                    width={tableDispObj.width}
-                    height={tableDispObj.height}
-                    fill="none"
-                    strokeWidth={TABLE_BORDER_WIDTH}
-                    stroke={TABLE_BORDER_COLOR}
-                    rx={TABLE_CORNER_R}
-                    ry={TABLE_CORNER_R}
-                />
+                    {
+                        // テーブル名
+                    }
+                    <SvgColumn
+                        columnDispObj={tableDispObj.tableTitle}
+                        isTableTitle={true}
+                    />
+                    {
+                        // 列
+                    }
+                    {tableDispObj.columns.map((tblCol, i) => 
+                        <SvgColumn
+                            key={`col_${i}`}
+                            columnDispObj={tblCol}
+                            isTableTitle={false}
+                            isEven={i%2===0}
+                        />
+                    )}
+                    {
+                        // テーブルの枠
+                    }
+                    <rect
+                        x={tableDispObj.relX}
+                        y={tableDispObj.relY}
+                        width={tableDispObj.width}
+                        height={tableDispObj.height}
+                        fill="none"
+                        strokeWidth={TABLE_BORDER_WIDTH}
+                        stroke={TABLE_BORDER_COLOR}
+                        rx={TABLE_CORNER_R}
+                        ry={TABLE_CORNER_R}
+                    />
+                </g>
             </g>
         </>
     );
