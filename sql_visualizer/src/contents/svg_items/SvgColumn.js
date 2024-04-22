@@ -47,20 +47,23 @@ const SvgColumn = ({
 
     return (
         <>
-            <rect
-                x={columnDispObj.relX}
-                y={columnDispObj.relY}
-                width={columnDispObj.width}
-                height={columnDispObj.height}
-                fill={fillColor}
-                clipPath={clipPath}
-            />
-            <text
-                x={textX}
-                y={textY}
-                fontSize={fontSize}
-                fill={textFill}
-            >{columnDispObj.name}</text>
+            <g>
+                <title>{columnDispObj.name}</title>
+                <rect
+                    x={columnDispObj.relX}
+                    y={columnDispObj.relY}
+                    width={columnDispObj.width}
+                    height={columnDispObj.height}
+                    fill={fillColor}
+                    clipPath={clipPath}
+                />
+                <text
+                    x={textX}
+                    y={textY}
+                    fontSize={fontSize}
+                    fill={textFill}
+                >{columnDispObj.name}</text>
+            </g>
         </>
     );
 };
