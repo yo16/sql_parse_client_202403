@@ -1,7 +1,7 @@
 /*
 LineageCanvas
 */
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 import { calcTablePillers } from "./svg_utils/calcTablePillers";
 import {
@@ -25,7 +25,9 @@ const LineageCanvas = ({
 }) => {
     const [svgWidth, setSvgWidth] = useState(SVG_MIN_WIDTH);
     const [svgHeight, setSvgHeight] = useState(SVG_MIN_HEIGHT);
+    const [clickedTableColumn, setClickedTableColumn] = useState(null); // table名.column名, tableの時だけの場合は、table名.
 
+    // tableObjを取得
     const {tablePillersDispObj, mapTablePos} = useMemo(() => {
         if (statements.length===0) {
             return {
@@ -61,7 +63,7 @@ const LineageCanvas = ({
                         relY: table.relY,
                         width: table.width,
                         height: table.height,
-                        name: table.tableTitle.name,
+                        tableTitle: table.tableTitle,
                         columns: cols,
                     },
                 }
@@ -73,13 +75,38 @@ const LineageCanvas = ({
             };
         }, {});
 
+        // clickedTable、clickedColumnがある場合はisClickedを立てる
+        if (clickedTableColumn) {
+            const tc = clickedTableColumn.split(".");
+            if (tc[1].length === 0) {
+                // テーブルの選択
+                mapTablePos[tc[0]].tableTitle.isClicked = true;
+            } else {
+                // 列の選択
+                mapTablePos[tc[0]].columns[tc[1]].isClicked = true;
+            }
+        }
+
         return {
             tablePillersDispObj,
             mapTablePos,
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [updateCounter]);
+    }, [updateCounter, clickedTableColumn]);
 
+
+    // テーブル名 or 列名のクリック
+    const handleOnClickTablePillers = (tableName, columnName) => {
+        const targetTableColumnStr = `${tableName}.${(columnName?columnName:"")}`;
+        if (targetTableColumnStr === clickedTableColumn) {
+            // 同じものをクリックした場合は解除
+            setClickedTableColumn(null);
+        } else {
+            setClickedTableColumn(targetTableColumnStr);
+        }
+    }
+
+    
     return (
         <svg
             className="display-canvas"
@@ -91,6 +118,7 @@ const LineageCanvas = ({
                 // テーブル
                 <SvgTablePillers
                     tablePillersDispObj={tablePillersDispObj}
+                    onClick={(tableName, columnName) => handleOnClickTablePillers(tableName, columnName)}
                 />
             }
             {

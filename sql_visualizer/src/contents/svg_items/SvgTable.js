@@ -8,9 +8,17 @@ import {
 import SvgColumn from "./SvgColumn";
 
 const SvgTable = ({
-    tableDispObj
+    tableDispObj,
+    onClick=f=>f,
 }) => {
     const clipName = `tableClip_${v4()}`;
+
+    const handleOnClickTable = () => {
+        onClick(tableDispObj.tableTitle.name, null);
+    }
+    const handleOnClickColumn = (columnName) => {
+        onClick(tableDispObj.tableTitle.name, columnName);
+    };
 
     return (
         <>
@@ -49,6 +57,7 @@ const SvgTable = ({
                     <SvgColumn
                         columnDispObj={tableDispObj.tableTitle}
                         isTableTitle={true}
+                        onClick={()=>handleOnClickTable()}
                     />
                     {
                         // 列
@@ -59,6 +68,7 @@ const SvgTable = ({
                             columnDispObj={tblCol}
                             isTableTitle={false}
                             isEven={i%2===0}
+                            onClick={()=>handleOnClickColumn(tblCol.name)}
                         />
                     )}
                     {

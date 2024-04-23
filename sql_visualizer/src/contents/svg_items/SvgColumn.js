@@ -18,6 +18,7 @@ const SvgColumn = ({
     clipPath,
     isTableTitle=false,
     isEven,
+    onClick=f=>f,
 }) => {
     const fillColor = isTableTitle
         ? TABLE_HEADER_BGCOLOR
@@ -45,9 +46,15 @@ const SvgColumn = ({
         : TABLE_COLUMN_TEXTCOLOR
     ;
 
+    const handeOnClick = () => {
+        onClick();
+    }
+
     return (
         <>
-            <g>
+            <g
+                onClick={handeOnClick}
+            >
                 <title>{columnDispObj.name}</title>
                 <rect
                     x={columnDispObj.relX}
@@ -60,7 +67,7 @@ const SvgColumn = ({
                 <text
                     x={textX}
                     y={textY}
-                    fontSize={fontSize}
+                    fontSize={fontSize + (columnDispObj.isClicked?10:0)}
                     fill={textFill}
                 >{columnDispObj.name}</text>
             </g>

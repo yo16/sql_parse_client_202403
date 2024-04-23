@@ -40,6 +40,7 @@ function calcColumn({
             relY: relY + halfHeight,
         },
         name: columnStatement.columnName,
+        isClicked: false,
     };
 }
 

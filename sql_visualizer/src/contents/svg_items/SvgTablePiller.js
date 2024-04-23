@@ -2,8 +2,12 @@
 import SvgTable from "./SvgTable";
 
 const SvgTablePiller = ({
-    tablePillerDispObj
+    tablePillerDispObj,
+    onClick=f=>f,
 }) => {
+    const handleOnClickTable = (tableName, columnName) => {
+        onClick(tableName, columnName);
+    }
     return (
         <>
             <g
@@ -13,6 +17,7 @@ const SvgTablePiller = ({
                     <SvgTable
                         key={`svgTbl_${i}`}
                         tableDispObj={tbl}
+                        onClick={(tableName, columnName) => handleOnClickTable(tableName, columnName)}
                     />
                 )}
             </g>
