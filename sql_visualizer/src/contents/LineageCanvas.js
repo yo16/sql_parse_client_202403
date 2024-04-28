@@ -1,7 +1,7 @@
 /*
 LineageCanvas
 */
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 import { calcTablePillers } from "./svg_utils/calcTablePillers";
 import {
